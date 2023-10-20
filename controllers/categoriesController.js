@@ -1,11 +1,11 @@
-const Categories = require('../models/categories');
+const Categories = require("../models/categories");
 
-const categoryByID = async (req, res, next, id) => { 
+const categoryByID = async (req, res, next, id) => {
   try {
-      const category = await Categories.findById(id);
-      res.json(category);
+    const category = await Categories.findById(id);
+    res.json(category);
   } catch (error) {
-      return res.status(400).json({ error: 'Category not found' });
+    return res.status(400).json({ error: "Category not found" });
   }
 };
 
@@ -32,44 +32,52 @@ const getCategoryById = async (req, res) => {
     const category = await Categories.findById(req.params.id);
     res.json(category);
   } catch (error) {
-    res.status(400).json({ error: 'Category not found' });
+    res.status(400).json({ error: "Category not found" });
   }
 };
 
 const updateCategoryById = async (req, res) => {
   try {
-    const updatedCategory = await Categories.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedCategory = await Categories.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     res.json(updatedCategory);
   } catch (error) {
-    res.status(400).json({ error: 'Category not found'});
+    res.status(400).json({ error: "Category not found" });
   }
 };
 
 const removeCategoryById = async (req, res) => {
   try {
     await Categories.findByIdAndRemove(req.params.id);
-    res.json({ message: 'Category removed successfully' });
+    res.json({ message: "Category removed successfully" });
   } catch (error) {
-    res.status(400).json({ error: 'Category not found' });
+    res.status(400).json({ error: "Category not found" });
   }
 };
 
 const removeAllCategories = async (req, res) => {
   try {
     await Categories.deleteMany({});
-    res.json({ message: 'All categories removed successfully' });
+    res.json({ message: "All categories removed successfully" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-const  findCategoriesByName= async (req, res) => {
+const findCategoriesByName = async (req, res) => {
   const name = String(req.params.name);
 
   try {
-    const categories = await Categories.find({ name: { $regex: name, $options: 'i' } });
+    const categories = await Categories.find({
+      name: { $regex: name, $options: "i" },
+    });
     if (categories.length === 0) {
-      res.status(404).json({ error: 'No categories found matching the search criteria.' });
+      res
+        .status(404)
+        .json({ error: "No categories found matching the search criteria." });
     } else {
       res.json(categories);
     }
@@ -86,5 +94,5 @@ module.exports = {
   updateCategoryById,
   removeCategoryById,
   removeAllCategories,
-  findCategoriesByName
+  findCategoriesByName,
 };
